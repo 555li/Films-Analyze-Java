@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <meta name="referrer" content="no-referrer"/>
+    <title>搜索页</title>
+    <link href="./css/index.css" rel="stylesheet"/>
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-E5Sj1saJVFNzWWK3YIJB4LEDEEVEGaOdfmCprPDkfWUo+xkb6Ep52Q1TMEtgcFwi"
+            crossorigin="anonymous"></script>
+</head>
+<style>
+    a {
+        text-decoration: none;
+    }
+
+    .movie_action {
+        position: absolute;
+        z-index: 2;
+        left: 50%;
+        top: 50%;
+        width: 30%;
+        transform: translate(-50%, -50%);
+    }
+
+    .bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, .2);
+    }
+
+    .nav-item:hover .dropdown-menu {
+        display: block;
+    }
+
+    .sb-nav-fixed {
+        background-image: url("./img/searchBackground.jpg");
+        background-size: cover;
+    }
+
+</style>
+<body class="sb-nav-fixed">
+<div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <form style="margin-top: 15px" method="post" action="/searchMovieByName" class="form-inline ">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="inputPassword2" class="sr-only"></label>
+                        <input name="searchIpt" type="text" class="form-control" id="inputPassword2"
+                               placeholder="请输入电影名关键字">
+                    </div>
+                    <button type="submit" style="margin-left: 15px" class="search-btn btn-primary mb-2">搜索</button>
+                </form>
+
+                <div class="card" style="width: 100%;margin-bottom: 20px" th:each="movie:${moviesList}">
+                    <div class="card-body">
+                        <span th:each="image:${movie.imageList}">
+                            <img th:src="${image}">
+                        </span>
+                        <h5 class="card-title">
+                            <span class="text-primary fw-bold" th:text="${movie.title}"></span>
+                            <span class="text-danger" th:text="${movie.rate}"></span>分
+                            <span class="text-success" th:text="${movie.year}"></span>年
+                        </h5>
+                        <p class="card-text" th:text="${movie.summary}"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="./js/scripts.js"></script>
+<script src="./lib/sb-admin-2.min.js"></script>
+<script src="./js/table.js" crossorigin="anonymous"></script>
+<script src="./js/datatables-simple-demo.js"></script>
+<script src="./lib/echarts.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>地图表</title>
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+            crossorigin="anonymous"></script>
+</head>
+<style>
+    .nav-item:hover .dropdown-menu {
+        display: block;
+    }
+</style>
+<body class="sb-nav-fixed">
+<div id="layoutSidenav">
+    <div>
+        <main>
+            <div class="container-fluid px-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        电影拍摄地点统计图
+                    </div>
+                    <div class="card-body">
+                        <div id="mainOne" style="width: 1000px;height:450px;"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-circle-half" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+                            </svg>
+                            电影语言统计图
+                        </div>
+                        <div class="card-body">
+                            <div id="mainTwo" style="width: 1000px;height: 450px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="./js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="./js/scripts.js"></script>
+<script src="./lib/echarts.js"></script>
+
+<script>
+    $.ajax({
+        url: "MovieDataByAddress",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var chartDoms = document.getElementById('mainOne');
+            var myCharts = echarts.init(chartDoms);
+            var options;
+            options = {
+                title: {
+                    text: '电影拍摄地点统计图'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {},
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+                },
+                yAxis: {
+                    type: 'category',
+                    data: data.cols
+                },
+                series: [
+                    {
+                        name: '拍摄地点',
+                        type: 'bar',
+                        data: data.rows
+                    }
+                ]
+            };
+            myCharts.setOption(options);
+        }
+    })
+    $.ajax({
+        url: "MovieDataByLang",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var chartDom = document.getElementById('mainTwo');
+            var myChart = echarts.init(chartDom);
+            option = {
+                title: [
+                    {
+                        text: ' 电影语言统计图'
+                    }
+                ],
+                polar: {
+                    radius: [30, '80%']
+                },
+                radiusAxis: {
+                    max: 40
+                },
+                angleAxis: {
+                    type: 'category',
+                    data: data.cols,
+                    startAngle: 75
+                },
+                tooltip: {},
+                series: {
+                    type: 'bar',
+                    data: data.rows,
+                    coordinateSystem: 'polar',
+                    label: {
+                        show: true,
+                        position: 'middle',
+                        formatter: '{b}: {c}'
+                    }
+                },
+                backgroundColor: '#fff',
+                animation: false
+            };
+            myChart.setOption(option);
+        }
+    })
+</script>
+</body>
+</html>

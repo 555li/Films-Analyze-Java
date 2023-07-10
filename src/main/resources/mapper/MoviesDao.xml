@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.xlm.dao.MoviesDao">
+
+    <resultMap type="com.neusoft.xlm.entity.Movies" id="MoviesMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="directors" column="directors" jdbcType="VARCHAR"/>
+        <result property="rate" column="rate" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="casts" column="casts" jdbcType="VARCHAR"/>
+        <result property="cover" column="cover" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="VARCHAR"/>
+        <result property="types" column="types" jdbcType="VARCHAR"/>
+        <result property="country" column="country" jdbcType="VARCHAR"/>
+        <result property="lang" column="lang" jdbcType="VARCHAR"/>
+        <result property="time" column="time" jdbcType="VARCHAR"/>
+        <result property="moveitime" column="moveiTime" jdbcType="VARCHAR"/>
+        <result property="commentLen" column="comment_len" jdbcType="VARCHAR"/>
+        <result property="starts" column="starts" jdbcType="VARCHAR"/>
+        <result property="summary" column="summary" jdbcType="VARCHAR"/>
+        <result property="comments" column="comments" jdbcType="VARCHAR"/>
+        <result property="imglist" column="imgList" jdbcType="VARCHAR"/>
+        <result property="movieurl" column="movieUrl" jdbcType="VARCHAR"/>
+        <result property="detaillink" column="detailLink" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap type="com.neusoft.xlm.entity.stars.MovieCountByStars" id="MoviesStarMap">
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="fiveStar" column="fiveStar" jdbcType="INTEGER"/>
+        <result property="fourStar" column="fourStar" jdbcType="INTEGER"/>
+        <result property="threeStar" column="threeStar" jdbcType="INTEGER"/>
+        <result property="twoStar" column="twoStar" jdbcType="INTEGER"/>
+        <result property="oneStar" column="oneStar" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MoviesMap">
+        select id,
+               directors,
+               rate,
+               title,
+               casts,
+               cover, year, types, country, lang, time, moveiTime, comment_len, starts, summary, comments, imgList, movieUrl, detailLink
+        from movies
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MoviesMap">
+        select
+        id, directors, rate, title, casts, cover, year, types, country, lang, time, moveiTime, comment_len, starts,
+        summary, comments, imgList, movieUrl, detailLink
+        from movies
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="directors != null and directors != ''">
+                and directors = #{directors}
+            </if>
+            <if test="rate != null and rate != ''">
+                and rate = #{rate}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="casts != null and casts != ''">
+                and casts = #{casts}
+            </if>
+            <if test="cover != null and cover != ''">
+                and cover = #{cover}
+            </if>
+            <if test="year != null and year != ''">
+                and year = #{year}
+            </if>
+            <if test="types != null and types != ''">
+                and types = #{types}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country}
+            </if>
+            <if test="lang != null and lang != ''">
+                and lang = #{lang}
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time}
+            </if>
+            <if test="moveitime != null and moveitime != ''">
+                and moveiTime = #{moveitime}
+            </if>
+            <if test="commentLen != null and commentLen != ''">
+                and comment_len = #{commentLen}
+            </if>
+            <if test="starts != null and starts != ''">
+                and starts = #{starts}
+            </if>
+            <if test="summary != null and summary != ''">
+                and summary = #{summary}
+            </if>
+            <if test="comments != null and comments != ''">
+                and comments = #{comments}
+            </if>
+            <if test="imglist != null and imglist != ''">
+                and imgList = #{imglist}
+            </if>
+            <if test="movieurl != null and movieurl != ''">
+                and movieUrl = #{movieurl}
+            </if>
+            <if test="detaillink != null and detaillink != ''">
+                and detailLink = #{detaillink}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from movies
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="directors != null and directors != ''">
+                and directors = #{directors}
+            </if>
+            <if test="rate != null and rate != ''">
+                and rate = #{rate}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="casts != null and casts != ''">
+                and casts = #{casts}
+            </if>
+            <if test="cover != null and cover != ''">
+                and cover = #{cover}
+            </if>
+            <if test="year != null and year != ''">
+                and year = #{year}
+            </if>
+            <if test="types != null and types != ''">
+                and types = #{types}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country}
+            </if>
+            <if test="lang != null and lang != ''">
+                and lang = #{lang}
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time}
+            </if>
+            <if test="moveitime != null and moveitime != ''">
+                and moveiTime = #{moveitime}
+            </if>
+            <if test="commentLen != null and commentLen != ''">
+                and comment_len = #{commentLen}
+            </if>
+            <if test="starts != null and starts != ''">
+                and starts = #{starts}
+            </if>
+            <if test="summary != null and summary != ''">
+                and summary = #{summary}
+            </if>
+            <if test="comments != null and comments != ''">
+                and comments = #{comments}
+            </if>
+            <if test="imglist != null and imglist != ''">
+                and imgList = #{imglist}
+            </if>
+            <if test="movieurl != null and movieurl != ''">
+                and movieUrl = #{movieurl}
+            </if>
+            <if test="detaillink != null and detaillink != ''">
+                and detailLink = #{detaillink}
+            </if>
+        </where>
+    </select>
+
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from movies
+        where id = #{id}
+    </delete>
+    <!--查询电影数量-->
+    <select id="getLength" resultType="Integer">
+        select count(*)
+        from movies
+    </select>
+    <!--查询最高评分-->
+    <select id="getMaxRate" resultType="Double">
+        select max(rate)
+        from movies
+    </select>
+
+    <!--查询出演次数最多的演员-->
+    <select id="getMaxCast" resultType="String">
+        <![CDATA[
+        SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(casts, ',', nums.n), ',', -1) AS category
+        FROM (SELECT 1 + units.i + tens.i * 10 AS n
+              FROM (SELECT 0 AS i
+                    UNION
+                    SELECT 1
+                    UNION
+                    SELECT 2
+                    UNION
+                    SELECT 3
+                    UNION
+                    SELECT 4
+                    UNION
+                    SELECT 5
+                    UNION
+                    SELECT 6
+                    UNION
+                    SELECT 7
+                    UNION
+                    SELECT 8
+                    UNION
+                    SELECT 9) AS units,
+                   (SELECT 0 AS i
+                    UNION
+                    SELECT 1
+                    UNION
+                    SELECT 2
+                    UNION
+                    SELECT 3
+                    UNION
+                    SELECT 4
+                    UNION
+                    SELECT 5
+                    UNION
+                    SELECT 6
+                    UNION
+                    SELECT 7
+                    UNION
+                    SELECT 8
+                    UNION
+                    SELECT 9) AS tens) AS nums
+                 JOIN movies
+        WHERE nums.n <= (1 + (LENGTH(casts) - LENGTH(REPLACE(casts, ',', ''))))
+        GROUP BY category
+        ORDER BY COUNT(*) DESC LIMIT 1
+        ]]>
+    </select>
+
+    <!--查询最多的城市-->
+    <select id="getMaxCountry" resultType="String">
+        <![CDATA[
+        SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(country, ',', nums.n), ',', -1) AS category
+        FROM (SELECT 1 + units.i + tens.i * 10 AS n
+              FROM (SELECT 0 AS i
+                    UNION
+                    SELECT 1
+                    UNION
+                    SELECT 2
+                    UNION
+                    SELECT 3
+                    UNION
+                    SELECT 4
+                    UNION
+                    SELECT 5
+                    UNION
+                    SELECT 6
+                    UNION
+                    SELECT 7
+                    UNION
+                    SELECT 8
+                    UNION
+                    SELECT 9) AS units,
+                   (SELECT 0 AS i
+                    UNION
+                    SELECT 1
+                    UNION
+                    SELECT 2
+                    UNION
+                    SELECT 3
+                    UNION
+                    SELECT 4
+                    UNION
+                    SELECT 5
+                    UNION
+                    SELECT 6
+                    UNION
+                    SELECT 7
+                    UNION
+                    SELECT 8
+                    UNION
+                    SELECT 9) AS tens) AS nums
+                 JOIN movies
+        WHERE nums.n <= (1 + (LENGTH(country) - LENGTH(REPLACE(country, ',', ''))))
+        GROUP BY category
+        ORDER BY COUNT(*) DESC LIMIT 1
+        ]]>
+    </select>
+
+    <!--查询最多出现的演员-->
+    <select id="getMaxLang" resultType="String">
+        <![CDATA[
+        SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(lang, ',', nums.n), ',', -1) AS category
+        FROM (SELECT 1 + units.i + tens.i * 10 AS n
+              FROM (SELECT 0 AS i
+                    UNION
+                    SELECT 1
+                    UNION
+                    SELECT 2
+                    UNION
+                    SELECT 3
+                    UNION
+                    SELECT 4
+                    UNION
+                    SELECT 5
+                    UNION
+                    SELECT 6
+                    UNION
+                    SELECT 7
+                    UNION
+                    SELECT 8
+                    UNION
+                    SELECT 9) AS units,
+                   (SELECT 0 AS i
+                    UNION
+                    SELECT 1
+                    UNION
+                    SELECT 2
+                    UNION
+                    SELECT 3
+                    UNION
+                    SELECT 4
+                    UNION
+                    SELECT 5
+                    UNION
+                    SELECT 6
+                    UNION
+                    SELECT 7
+                    UNION
+                    SELECT 8
+                    UNION
+                    SELECT 9) AS tens) AS nums
+                 JOIN movies
+        WHERE nums.n <= (1 + (LENGTH(lang) - LENGTH(REPLACE(lang, ',', ''))))
+        GROUP BY category
+        ORDER BY COUNT(*) DESC LIMIT 1
+        ]]>
+    </select>
+    <select id="getTypeCount"  resultType="Integer">
+        <![CDATA[
+        SELECT COUNT(DISTINCT type) AS type_count
+        FROM (SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(types, ',', n), ',', -1) AS type
+              FROM movies
+                       CROSS JOIN (SELECT 1 AS n
+                                   UNION ALL
+                                   SELECT 2
+                                   UNION ALL
+                                   SELECT 3
+                                   UNION ALL
+                                   SELECT 4
+                                   UNION ALL
+                                   SELECT 5) numbers
+              WHERE n <= LENGTH(types) - LENGTH(REPLACE(types, ',', '')) + 1) types_table
+        ]]>
+    </select>
+    <!--通过比分查询各个比分的电影数量-->
+    <select id="selectCountByRate" resultType="com.neusoft.xlm.entity.rate.MovieDataByRate">
+        SELECT count(*) AS count,rate
+        FROM movies
+        GROUP BY rate
+        ORDER BY rate ASC
+    </select>
+
+    <!--通过年份查询各个年份的电影数量-->
+    <select id="selectMovieCountByYear" resultType="com.neusoft.xlm.entity.year.MovieCountByYear">
+        SELECT count(*) AS count,year
+        FROM movies
+        GROUP BY year
+        ORDER BY year ASC
+    </select>
+    <!--通过电影时长查询各个电影时长的电影数量-->
+    <select id="selectMovieDataByTime" resultType="com.neusoft.xlm.entity.time.MovieCountByTime">
+        SELECT count(*) AS value,movieTime AS name
+        FROM movies
+        GROUP BY movieTime
+    </select>
+
+    <!--通过种类查询各个种类的电影数量-->
+    <select id="selectCountByCategory" resultType="com.neusoft.xlm.entity.time.MovieCountByTime">
+        <![CDATA[
+        SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(types, ',', nums.n), ',', -1) AS name, count(*) as value
+        FROM (SELECT 1 + units.i + tens.i * 10 AS n
+            FROM (SELECT 0 AS i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4
+            UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) AS units, (SELECT 0 AS i UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4
+            UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) AS tens
+            ) AS nums
+            JOIN movies
+        WHERE nums.n <= (1 + (LENGTH (types) - LENGTH (REPLACE(types, ',', ''))))
+        GROUP BY name
+        ORDER BY value DESC
+        ]]>
+    </select>
+
+    <!--通过电影名称相似查询电影信息-->
+    <select id="queryByName" parameterType="String" resultType="com.neusoft.xlm.entity.Movies">
+        select id,
+               directors,
+               rate,
+               title,
+               casts,
+               cover, year, types, country, lang, time, movieTime, comment_len, starts, summary, comments, imgList, movieUrl, detailLink
+        from movies
+        where title like "%"#{searchIpt}"%"
+    </select>
+
+    <!--查询所有电影-->
+    <select id="queryMovie" resultType="com.neusoft.xlm.entity.Movies">
+        select id,
+               directors,
+               rate,
+               title,
+               casts,
+               cover, year, types, country, lang, time, movieTime, comment_len, starts, summary, comments, imgList, movieUrl, detailLink
+        from movies
+    </select>
+
+    <!--根据电影名删除电影-->
+    <delete id="deleteByTitle" parameterType="String">
+        delete
+        from movies
+        where title = #{title}
+    </delete>
+
+    <!--获取一到五星的星级评分-->
+    <select id="selectMovieRateByName" resultMap="MoviesStarMap">
+        SELECT title ,REPLACE(SUBSTRING_INDEX(starts, ',', 1), '%', '')                           AS fiveStar,
+               REPLACE(SUBSTRING_INDEX(SUBSTRING_INDEX(starts, ',', 2), ',', -1), '%', '') AS fourStar,
+               REPLACE(SUBSTRING_INDEX(SUBSTRING_INDEX(starts, ',', 3), ',', -1), '%', '') AS threeStar,
+               REPLACE(SUBSTRING_INDEX(SUBSTRING_INDEX(starts, ',', 4), ',', -1), '%', '') AS twoStar,
+               REPLACE(SUBSTRING_INDEX(SUBSTRING_INDEX(starts, ',', 5), ',', -1), '%', '') AS oneStar
+        FROM movies
+        WHERE title like "%"#{title}"%"
+        limit 1
+    </select>
+
+    <!--    根据年份获取每一年的电影平均平评分-->
+    <select id="selectRateByYear" resultType="com.neusoft.xlm.entity.year.MovieRateByYear">
+        select AVG(rate) as rate, year
+        from movies
+        group by year
+        order by year
+    </select>
+
+    <!--    获取不同国家的电影数-->
+    <select id="selectMovieDataByAddress" resultType="com.neusoft.xlm.entity.address.MovieCountByAddress">
+        <![CDATA[
+        SELECT country as address, COUNT(*) AS count
+        FROM (
+            SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(country, ',', numbers.n), ',', -1)) AS country
+            FROM movies
+            CROSS JOIN (
+            SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+            ) AS numbers
+            WHERE CHAR_LENGTH (country) - CHAR_LENGTH (REPLACE(country, ',', '')) >= numbers.n - 1
+            ) AS countries
+        GROUP BY country
+        ]]>
+    </select>
+
+    <!--    获取不同语言的电影数-->
+    <select id="selectMovieDataByLang" resultType="com.neusoft.xlm.entity.lang.MovieCountByLang">
+        <![CDATA[
+        SELECT lang, COUNT(*) AS count
+        FROM (
+            SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(lang, ',', numbers.n), ',', -1)) AS lang
+            FROM movies
+            CROSS JOIN (
+            SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+            ) AS numbers
+            WHERE CHAR_LENGTH (lang) - CHAR_LENGTH (REPLACE(lang, ',', '')) >= numbers.n - 1
+            ) AS countries
+        GROUP BY lang
+        ]]>
+    </select>
+
+    <!--    获取导演前20-->
+    <select id="selectMovieDataByDirectors" resultType="com.neusoft.xlm.entity.director.MovieDataByDirector">
+        <![CDATA[
+        SELECT directors as dirName, COUNT(*) AS count
+        FROM (
+            SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(directors, ',', numbers.n), ',', -1)) AS directors
+            FROM movies
+            CROSS JOIN (
+            SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+            ) AS numbers
+            WHERE CHAR_LENGTH (directors) - CHAR_LENGTH (REPLACE(directors, ',', '')) >= numbers.n - 1
+            ) AS countries
+        GROUP BY directors
+        ORDER BY count DESC
+            LIMIT 20
+        ]]>
+    </select>
+
+    <!--    获取演员前20-->
+    <select id="selectMovieDataByCast" resultType="com.neusoft.xlm.entity.cast.MovieDataByCast">
+        <![CDATA[
+        SELECT casts as castName, COUNT(*) AS count
+        FROM (
+            SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(casts, ',', numbers.n), ',', -1)) AS casts
+            FROM movies
+            CROSS JOIN (
+            SELECT 1 AS n UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+            ) AS numbers
+            WHERE CHAR_LENGTH (casts) - CHAR_LENGTH (REPLACE(casts, ',', '')) >= numbers.n - 1
+            ) AS countries
+        GROUP BY casts
+        ORDER BY count DESC
+            LIMIT 20
+        ]]>
+    </select>
+
+    <select id="queryWCPCastsData" resultType="java.lang.String">
+        SELECT casts
+        FROM movies
+    </select>
+
+    <select id="queryWCPTitleData" resultType="java.lang.String">
+        SELECT title
+        FROM movies
+    </select>
+    <select id="queryWCPSummaryData" resultType="java.lang.String">
+        SELECT summary
+        FROM movies
+    </select>
+    <select id="getMovieRateByCountry" resultType="com.neusoft.xlm.entity.country.MovieRateByCountry">
+        SELECT CASE
+                   WHEN FIND_IN_SET('中国大陆', country) OR FIND_IN_SET('中国台湾', country) OR
+                        FIND_IN_SET('中国香港', country) THEN '中国'
+                   WHEN FIND_IN_SET('日本', country) THEN '日本'
+                   WHEN FIND_IN_SET('美国', country) THEN '美国'
+                   WHEN FIND_IN_SET('韩国', country) THEN '韩国'
+                   WHEN FIND_IN_SET('英国', country) THEN '英国'
+                   ELSE '其他地区'
+                   END                AS country_type,
+               TRUNCATE(AVG(rate), 2) AS rate
+        FROM movies
+        GROUP BY country_type;
+    </select>
+    <select id="getMoiveDataByForeign" resultType="com.neusoft.xlm.entity.country.MovieCountByCountry">
+        SELECT CASE
+                   WHEN FIND_IN_SET('中国大陆', country) OR FIND_IN_SET('中国台湾', country) OR
+                        FIND_IN_SET('中国香港', country) THEN '中国'
+                   WHEN FIND_IN_SET('日本', country) THEN '日本'
+                   WHEN FIND_IN_SET('美国', country) THEN '美国'
+                   WHEN FIND_IN_SET('韩国', country) THEN '韩国'
+                   WHEN FIND_IN_SET('英国', country) THEN '英国'
+                   ELSE '其他地区'
+                   END AS name,
+               count(*) AS value
+        FROM
+            movies
+        GROUP BY
+            name;
+    </select>
+
+</mapper>
+

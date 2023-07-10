@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <meta name="referrer" content="no-referrer"/>
+    <link href="./css/index.css" rel="stylesheet"/>
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+            crossorigin="anonymous"></script>
+</head>
+<style>
+    a {
+        text-decoration: none;
+    }
+
+    .movie_action {
+        position: absolute;
+        z-index: 2;
+        left: 50%;
+        top: 50%;
+        width: 30%;
+        transform: translate(-50%, -50%);
+    }
+
+    .bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, .2);
+    }
+
+    .nav-item:hover .dropdown-menu {
+        display: block;
+    }
+</style>
+<body class="sb-nav-fixed">
+<div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active"></li>
+                </ol>
+                <div class="row">
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card bg-primary text-white mb-4">
+                            <div class="card-body">电影个数</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <a name="len" class="small text-white stretched-link" href="#"></a>个
+                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card bg-warning text-white mb-4">
+                            <div class="card-body">豆瓣最高评分</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <a name="maxRate" class="small text-white stretched-link" href="#" ></a>分
+                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card bg-success text-white mb-4">
+                            <div class="card-body">出场最多演员</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <a name="cast" class="small text-white stretched-link" href="#" ></a>
+                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card bg-danger text-white mb-4">
+                            <div class="card-body">制片国家最多数</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <a name="country" class="small text-white stretched-link" href="#" ></a>
+                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card bg-info text-white mb-4">
+                            <div class="card-body">电影类型数量</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <a name="typeCount" class="small text-white stretched-link" href="#" ></a>
+                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-6">
+                        <div class="card bg-dark text-white mb-4">
+                            <div class="card-body">最多电影语言</div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <a name="lang" class="small text-white stretched-link" href="#" ></a>
+                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-circle-half" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+                                </svg>
+                                电影种类饼状图
+                            </div>
+                            <div class="card-body">
+                                <div id="mainOne" style="width: 100%;height: 400px"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-bar me-1"></i>
+                                电影评分折线图
+                            </div>
+                            <div class="card-body">
+                                <div id="mainTwo" style="width: 100%;height: 400px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="./js/scripts.js"></script>
+<script src="./lib/sb-admin-2.min.js"></script>
+<script src="./lib/echarts.js"></script>
+<script src="./js/table.js" crossorigin="anonymous"></script>
+<script src="./js/datatables-simple-demo.js"></script>
+
+<script>
+    $(function () {
+        //获取首页电影数据
+        $.ajax({
+            url: "MainMoiveData",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                console.log(data)
+                document.getElementsByName("len")[0].innerText=data.len;
+                document.getElementsByName("maxRate")[0].innerText=data.rate;
+                document.getElementsByName("cast")[0].innerText=data.cast;
+                document.getElementsByName("country")[0].innerText=data.country;
+                document.getElementsByName("lang")[0].innerText=data.lang;
+                document.getElementsByName("typeCount")[0].innerText=data.typeCount;
+            }
+        })
+        //获取电影评分折线图数据
+        $.ajax({
+            url: "CinematicLine",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                var chartDoms = document.getElementById('mainTwo');
+                var myCharts = echarts.init(chartDoms);
+                var options;
+
+                options = {
+                    title: {
+                        text: '电影评分折线图',
+                        subtext: '数据来自Rate数据集',
+                        left: 'center'
+                    },
+                    visualMap: [
+                        {
+                            show: false,
+                            type: 'continuous',
+                            seriesIndex: 1,
+                            dimension: 0,
+                            min: 0,
+                            max: 400
+                        }
+                    ],
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: data.rows
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: data.cols,
+                            type: 'line',
+                            areaStyle: {},
+                        }]
+                };
+                myCharts.setOption(options);
+            }
+            })
+        //获取电影饼状图数据
+        $.ajax({
+            url: "PieChartByMovieCategory",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                var chartDom = document.getElementById('mainOne');
+                var myChart = echarts.init(chartDom);
+                var option;
+                option = {
+                    title: {
+                        text: '电影种类饼状图',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: '种类',
+                        left: 'right'
+                    },
+                    series: [
+                        {
+                            name: '电影种类个数',
+                            type: 'pie',
+                            radius: '50%',
+                            data: data,
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            }
+        })
+    })
+
+</script>
+</body>
+</html>
+

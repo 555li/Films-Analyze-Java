@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer" />
+    <title>{{ idData[3] }}电影预告片</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    video{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+<body>
+    <video controls loop autoplay muted src="{{ idData[17] }}"></video>
+</body>
+</html>

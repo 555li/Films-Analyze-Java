@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>时间表</title>
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+            crossorigin="anonymous"></script>
+</head>
+<style>
+    .nav-item:hover .dropdown-menu {
+        display: block;
+    }
+</style>
+<body class="sb-nav-fixed">
+
+<div id="layoutSidenav">
+    <div>
+        <main>
+            <div class="container-fluid px-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        历年产量统计
+                    </div>
+                    <div class="card-body">
+                        <div id="mainOne" style="width: 1000px;height:300px;"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card">
+                        <div class="card-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-circle-half" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+                            </svg>
+                            电影数据时长分布占比
+                        </div>
+                        <div class="card-body">
+                            <div id="mainTwo" style="width: 1000px;height: 300px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="./lib/echarts.js"></script>
+<script src="./js/scripts.js"></script>
+<script>
+    $.ajax({
+        url: "MovieCountByYear",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var chartDoms = document.getElementById('mainOne');
+            var myCharts = echarts.init(chartDoms);
+            var options;
+            options = {
+                title: {
+                    text: '历年电影产量统计',
+                    subtext: '数据来自Year数据集',
+                    left: 'center'
+                },
+                visualMap: [
+                    {
+                        show: false,
+                        type: 'continuous',
+                        seriesIndex: 1,
+                        dimension: 0,
+                        min: 0,
+                        max: 400
+                    }
+                ],
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.rows,
+                },
+                yAxis: {
+                    type: 'value'
+                }
+                ,
+                series: [
+                    {
+                        data: data.cols,
+                        type: 'line',
+                        areaStyle: {},
+                    }]
+            };
+            myCharts.setOption(options);
+        }
+    })
+    $.ajax({
+        url: "MoiveDataByTime",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var chartDom = document.getElementById('mainTwo');
+            var myChart = echarts.init(chartDom);
+            option = {
+                title: {
+                    text: '电影数据时长分布占比',
+                    subtext: '数据来源于MovieTime数据集',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    type: 'scroll',
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [
+                    {
+                        name: '时长占有数',
+                        type: 'pie',
+                        radius: '50%',
+                        label: {
+                            normal: {
+                                show: true,
+                                formatter: '{b}: {c}个({d}%)' //自定义显示格式(b:name, c:value, d:百分比)
+                            }
+                        },
+                        data: data,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }]
+            };
+
+            myChart.setOption(option);
+        }
+    })
+
+
+</script>
+<script>
+
+
+</script>
+</body>
+</html>
