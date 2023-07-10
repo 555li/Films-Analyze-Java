@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>时间表</title>
+    <link href="./css/styles.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+            crossorigin="anonymous"></script>
+</head>
+<style>
+    .nav-item:hover .dropdown-menu {
+        display: block;
+    }
+</style>
+<body class="sb-nav-fixed">
+<div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        电影评分统计
+                    </div>
+                    <div class="card-body">
+                        <div id="mainOne" style="width: 100%;height: 400px"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-circle-half" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+                                </svg>
+                                豆瓣评分星级饼状图
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <label for="inputPassword2" class="sr-only"></label>
+                                    <input name="searchIpt" type="text" class="form-control" id="inputPassword2"
+                                           placeholder="请输入电影名关键字">
+                                </div>
+                                <button  class="rate-btn btn-primary mb-2"
+                                        onclick="getRateByMovieName()">搜索
+                                </button>
+
+                            </div>
+                            <hr>
+                            <div class="card-body">
+                                <div id="mainTwo" style="width: 100%;height: 500px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-bar me-1"></i>
+                                豆瓣年度评价评分柱状图
+                            </div>
+                            <div class="card-body">
+                                <div id="mainThree" style="width: 100%;height: 500px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="./js/bootstrap.bundle.min.js"></script>
+<script src="./js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="./lib/echarts.js"></script>
+
+<!--电影评分统计折线图-->
+<script>
+    //获取电影评分折线图数据
+    $.ajax({
+        url: "CinematicLine",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var chartDoms = document.getElementById('mainOne');
+            var myCharts = echarts.init(chartDoms);
+            var options;
+            options = {
+                title: {
+                    text: '电影评分折线图',
+                    subtext: '数据来自Rate数据集',
+                    left: 'center'
+                },
+                visualMap: [
+                    {
+                        show: false,
+                        type: 'continuous',
+                        seriesIndex: 1,
+                        dimension: 0,
+                        min: 0,
+                        max: 400
+                    }
+                ],
+
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.rows
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: data.cols,
+                        type: 'line',
+                        areaStyle: {},
+                    }
+                ]
+            };
+            myCharts.setOption(options);
+        }
+    })
+
+    //通过发送ajax请求，异步获取电影数据
+    function getRateByMovieName() {
+        var movieName = document.getElementsByName("searchIpt")[0].value;
+        if (movieName.trim() == null || movieName.trim().length == 0) {
+            alert("请输入电影名称")
+        }
+
+        $.ajax({
+            url: "queryRateByMovieName/" + movieName,
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                var chartDom = document.getElementById('mainTwo');
+                var myChart = echarts.init(chartDom);
+                option = {
+                    title: {
+                        text: data.title+'电影星级占比图',
+                        subtext: '数据来源于MovieTime数据集',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    series: [
+                        {
+                            name: '星级评分占有数',
+                            type: 'pie',
+                            radius: '50%',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    formatter: '{d}%' //自定义显示格式(b:name, c:value, d:百分比)
+                                }
+                            },
+                            data: data.list,
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                }
+                option && myChart.setOption(option);
+            }
+        })
+    }
+
+    // mainThree豆瓣年度评分柱状图
+    $.ajax({
+        url: "RateByYearChart",
+        type: "post",
+        dataType: "json",
+        success: function (data) {
+            var chartDomss = document.getElementById('mainThree');
+            var myChartss = echarts.init(chartDomss);
+            optionss = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.cols
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: data.rows,
+                        type: 'bar',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(180, 180, 180, 0.2)'
+                        }
+                    }
+                ]
+            };
+            myChartss.setOption(optionss);
+        }
+    })
+
+</script>
+</body>
+</html>

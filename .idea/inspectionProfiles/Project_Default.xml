@@ -1,0 +1,20 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="pandas" />
+          <option value="requests" />
+          <option value="jsonpath" />
+          <option value="python.moiveReptile.pymysql" />
+          <option value="python.moiveReptile.*" />
+          <option value="json" />
+          <option value="re" />
+          <option value="random" />
+          <option value="time" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

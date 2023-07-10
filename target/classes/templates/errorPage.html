@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content=""/>
+    <link href="css/errorPageStyle.css" rel="stylesheet" type="text/css" media="all"/>
+    <!-- /css files -->
+<body style="background-image:url('errorPageImg/cut.jpg');background-repeat:no-repeat; background-size:cover; ">
+<center>
+    <div>
+        <h1>错误信息</h1>
+        <div>
+            <div>
+                <div class="errorInfo"><img src="errorPageImg/message.jpg" style="width:150px;height:150px">
+                    <h3 >系统提示： <font th:text="${session.msg}" style="color:red"></font></h3>
+                </div>
+            </div>
+            <div><p class="copyright">XLM@Python+Flask+Echarts</p></div>
+
+        </div>
+        <div class="clearfix">
+            <a href="javascript:history.back(-1)">返回上一页</a></div>
+    </div>
+</center>
+</body>
+</html>

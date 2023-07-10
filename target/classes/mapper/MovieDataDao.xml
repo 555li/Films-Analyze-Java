@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.xlm.dao.MovieDataDao">
+
+    <resultMap type="com.neusoft.xlm.entity.Movies" id="MoviesMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="directors" column="directors" jdbcType="VARCHAR"/>
+        <result property="rate" column="rate" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="casts" column="casts" jdbcType="VARCHAR"/>
+        <result property="cover" column="cover" jdbcType="VARCHAR"/>
+        <result property="year" column="year" jdbcType="VARCHAR"/>
+        <result property="types" column="types" jdbcType="VARCHAR"/>
+        <result property="country" column="country" jdbcType="VARCHAR"/>
+        <result property="lang" column="lang" jdbcType="VARCHAR"/>
+        <result property="time" column="time" jdbcType="VARCHAR"/>
+        <result property="moveitime" column="moveiTime" jdbcType="VARCHAR"/>
+        <result property="commentLen" column="comment_len" jdbcType="VARCHAR"/>
+        <result property="starts" column="starts" jdbcType="VARCHAR"/>
+        <result property="summary" column="summary" jdbcType="VARCHAR"/>
+        <result property="comments" column="comments" jdbcType="VARCHAR"/>
+        <result property="imglist" column="imgList" jdbcType="VARCHAR"/>
+        <result property="movieurl" column="movieUrl" jdbcType="VARCHAR"/>
+        <result property="detaillink" column="detailLink" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap type="com.neusoft.xlm.entity.stars.MovieCountByStars" id="MoviesStarMap">
+        <result property="fiveStar" column="fiveStar" jdbcType="INTEGER"/>
+        <result property="fourStar" column="fourStar" jdbcType="INTEGER"/>
+        <result property="threeStar" column="threeStar" jdbcType="INTEGER"/>
+        <result property="twoStar" column="twoStar" jdbcType="INTEGER"/>
+        <result property="oneStar" column="oneStar" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--通过电影名称相似查询电影信息-->
+    <select id="queryByName" parameterType="String" resultType="com.neusoft.xlm.entity.Movies">
+        select id,
+               directors,
+               rate,
+               title,
+               casts,
+               cover, year, types, country, lang, time, movieTime, comment_len, starts, summary, comments, imgList, movieUrl, detailLink
+        from movies
+        where title like "%"#{searchIpt}"%"
+    </select>
+
+    <!--查询所有电影-->
+    <select id="queryMovie" resultType="com.neusoft.xlm.entity.Movies">
+        select id,
+               directors,
+               rate,
+               title,
+               casts,
+               cover, year, types, country, lang, time, movieTime, comment_len, starts, summary, comments, imgList, movieUrl, detailLink
+        from movies
+    </select>
+
+    <!--根据电影名删除电影-->
+    <delete id="deleteByTitle" parameterType="String">
+        delete
+        from movies
+        where title = #{title}
+    </delete>
+
+</mapper>
+
